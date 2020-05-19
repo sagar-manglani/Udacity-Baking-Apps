@@ -34,13 +34,13 @@ public class RecipeListViewModel extends AndroidViewModel implements LoaderManag
 
 
     private void loadRecipe(){
-        getApplication().
+       /* getApplication().
                 LoaderManager lm =
         if (lm.getLoader(LOADER_ID) == null) {
             lm.initLoader(LOADER_ID, null, this).forceLoad();
         } else
             lm.restartLoader(LOADER_ID, null, this).forceLoad();
-
+        */
     }
 
     @NonNull
