@@ -1,6 +1,7 @@
 package com.udacity.udacitybakingapps;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,12 @@ public class testingfragment extends Fragment {
 
         View view=inflater.inflate(R.layout.testingfragment,container,false);
         String text="changed";
-        if(getArguments()!=null)
-            text=getArguments().getString("text");
+
+        if(getArguments()!=null) {
+            Log.d("testing",getArguments().getString("text"));
+            text = getArguments().getString("text");
+        }else
+            Log.d("testing","I am null");
         TextView tv=view.findViewById(R.id.testing);
         tv.setText(text);
         //return super.onCreateView(inflater, container, savedInstanceState);
