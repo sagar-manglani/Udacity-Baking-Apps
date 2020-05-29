@@ -1,5 +1,7 @@
 package com.udacity.udacitybakingapps.Utils;
 
+import android.util.Log;
+
 import com.udacity.udacitybakingapps.Data.Ingredients;
 import com.udacity.udacitybakingapps.Data.Recipe;
 import com.udacity.udacitybakingapps.Data.Steps;
@@ -17,6 +19,7 @@ import java.util.Scanner;
 import javax.net.ssl.HttpsURLConnection;
 
 public class FetchData {
+
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
         try {
@@ -50,8 +53,9 @@ public class FetchData {
                 if(jsonObject.getString("ingredients")!=null && !jsonObject.getString("ingredients").isEmpty()){
                     ArrayList<Ingredients> ingredients=new ArrayList<Ingredients>();
                     JSONArray ingredientsArray=jsonObject.getJSONArray("ingredients");
+                    //Log.d("FetchData",""+ingredientsArray.length());
                     for(int j=0;j<ingredientsArray.length();j++){
-                        JSONObject ingredientsObject=ingredientsArray.getJSONObject(i);
+                        JSONObject ingredientsObject=ingredientsArray.getJSONObject(j);
                         Ingredients ingredient= new Ingredients();
                         if(ingredientsObject.getString("quantity")!=null && !ingredientsObject.getString("quantity").isEmpty())
                             ingredient.setQuantity(ingredientsObject.getString("quantity"));
@@ -67,7 +71,7 @@ public class FetchData {
                     ArrayList<Steps> steps = new ArrayList<Steps>();
                     JSONArray stepsArray = jsonObject.getJSONArray("steps");
                     for (int j = 0; j < stepsArray.length(); j++) {
-                        JSONObject stepsObject = stepsArray.getJSONObject(i);
+                        JSONObject stepsObject = stepsArray.getJSONObject(j);
                         Steps step = new Steps();
                         if (stepsObject.getString("shortDescription") != null && !stepsObject.getString("shortDescription").isEmpty())
                             step.setShortDescription(stepsObject.getString("shortDescription"));
@@ -103,5 +107,32 @@ public class FetchData {
         }
         return null;
 
+    }
+
+    public static String fetchIngredientsString(Recipe recipe){
+        String ingredient_text_row="";
+        for(int i=0; i<recipe.getIngredients().size();i++){
+            ingredient_text_row = ingredient_text_row + recipe.getIngredients().get(i).getIngredient() + "  -" + recipe.getIngredients().get(i).getQuantity() + "  " + recipe.getIngredients().get(i).getMeasure();
+            ingredient_text_row = ingredient_text_row + System.getProperty("line.separator");
+            }
+        return ingredient_text_row;
+    }
+
+    public static ArrayList<ArrayList<String>> fetchStepsArrayList(Recipe recipe){
+        ArrayList<ArrayList<String>> res=new ArrayList<ArrayList<String>>();
+        ArrayList<String> nameList= new ArrayList<>();
+        ArrayList<String> descList= new ArrayList<>();
+        ArrayList<String> videoUrlList= new ArrayList<>();
+        ArrayList<String> ingList=new ArrayList<>();
+
+        for(int i=0; i<recipe.getSteps().size();i++){
+            nameList.add(recipe.getSteps().get(i).getShortDescription());
+            descList.add(recipe.getSteps().get(i).getDescription());
+            videoUrlList.add(recipe.getSteps().get(i).getVideoURL());
+        }
+        res.add(nameList);
+        res.add(descList);
+        res.add(videoUrlList);
+        return res;
     }
 }

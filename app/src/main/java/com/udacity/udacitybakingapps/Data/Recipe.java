@@ -1,13 +1,21 @@
 package com.udacity.udacitybakingapps.Data;
 
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
-public class Recipe {
+public class Recipe implements Parcelable {
     private String name;
     private ArrayList<Ingredients> ingredients;
     private ArrayList<Steps> steps;
     private String servings;
     private String image_url;
+
+    public Recipe(){
+
+    }
 
     public String getName() {
         return name;
@@ -48,4 +56,59 @@ public class Recipe {
     public void setImage_url(String image_url) {
         this.image_url = image_url;
     }
+    protected Recipe(Parcel in) {
+        name = in.readString();
+        if (in.readByte() == 0x01) {
+            ingredients = new ArrayList<Ingredients>();
+            in.readList(ingredients, Ingredients.class.getClassLoader());
+        } else {
+            ingredients = null;
+        }
+        if (in.readByte() == 0x01) {
+            steps = new ArrayList<Steps>();
+            in.readList(steps, Steps.class.getClassLoader());
+        } else {
+            steps = null;
+        }
+        servings = in.readString();
+        image_url = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        if (ingredients == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(ingredients);
+        }
+        if (steps == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(steps);
+        }
+        dest.writeString(servings);
+        dest.writeString(image_url);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
+        @Override
+        public Recipe createFromParcel(Parcel in) {
+            return new Recipe(in);
+        }
+
+        @Override
+        public Recipe[] newArray(int size) {
+            return new Recipe[size];
+        }
+    };
+
 }
