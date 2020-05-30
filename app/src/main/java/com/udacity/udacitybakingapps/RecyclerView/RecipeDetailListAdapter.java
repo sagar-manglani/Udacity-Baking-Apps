@@ -48,6 +48,8 @@ public class RecipeDetailListAdapter extends RecyclerView.Adapter<RecipeDetailLi
         notifyDataSetChanged();
     }
 
+
+
     @Override
     public int getItemCount() {
         if(recipe!=null)
@@ -65,7 +67,7 @@ public class RecipeDetailListAdapter extends RecyclerView.Adapter<RecipeDetailLi
 
         @Override
         public void onClick(View view) {
-            Log.d(TAG,"Inside onClick of RecipeDetailAdapter");
+            Log.d(TAG,"Inside onClick of RecipeDetailAdapter "+ getAbsoluteAdapterPosition());
             parent.listOnClick(getAbsoluteAdapterPosition());
         }
     }

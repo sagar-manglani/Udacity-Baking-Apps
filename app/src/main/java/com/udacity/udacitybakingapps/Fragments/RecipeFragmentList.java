@@ -11,6 +11,7 @@ import com.udacity.udacitybakingapps.Interface.FragmentToActivityListener;
 import com.udacity.udacitybakingapps.Interface.SendDataFromActivity;
 import com.udacity.udacitybakingapps.Interface.FragmentListOnClickListener;
 import com.udacity.udacitybakingapps.R;
+import com.udacity.udacitybakingapps.RecipeDetail;
 import com.udacity.udacitybakingapps.RecyclerView.RecipeListAdapter;
 
 import java.util.ArrayList;
@@ -54,6 +55,8 @@ public class RecipeFragmentList extends Fragment implements SendDataFromActivity
         }
 
     }
+
+
 
     @Override
     public void listOnClick(int position) {

@@ -19,6 +19,8 @@ import com.udacity.udacitybakingapps.Utils.FetchData;
 import com.udacity.udacitybakingapps.Utils.Loaders;
 import com.udacity.udacitybakingapps.ViewModels.RecipeListViewModel;
 
+import org.parceler.Parcels;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -98,7 +100,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
     public void loadDetailActivity(int position){
         Intent intent = new Intent(MainActivity.this,RecipeDetail.class);
-        intent.putExtra("recipe",mRecipeList.get(position));
+        intent.putExtra("recipe", Parcels.wrap(mRecipeList.get(position)));
+        //intent.putExtra("recipe",mRecipeList.get(position));
         String ingredient_text_row="";
         Recipe recipe=mRecipeList.get(position);
         Log.d(TAG,""+recipe.getIngredients().size());

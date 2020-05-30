@@ -1,13 +1,15 @@
 package com.udacity.udacitybakingapps.Data;
 
-import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Ingredients implements Parcelable {
+import org.parceler.Parcel;
 
-    private String quantity;
-    private String measure;
-    private String ingredient;
+//public class Ingredients implements Parcelable {
+@Parcel
+public class Ingredients{
+     String quantity;
+     String measure;
+     String ingredient;
 
     public Ingredients(){
 
@@ -36,7 +38,7 @@ public class Ingredients implements Parcelable {
     public void setIngredient(String ingredient) {
         this.ingredient = ingredient;
     }
-    protected Ingredients(Parcel in) {
+ /*   protected Ingredients(Parcel in) {
         quantity = in.readString();
         measure = in.readString();
         ingredient = in.readString();
@@ -65,5 +67,5 @@ public class Ingredients implements Parcelable {
         public Ingredients[] newArray(int size) {
             return new Ingredients[size];
         }
-    };
+    };*/
 }

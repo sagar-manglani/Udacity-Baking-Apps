@@ -3,6 +3,7 @@ package com.udacity.udacitybakingapps;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.os.PersistableBundle;
 import android.util.Log;
 
@@ -12,8 +13,11 @@ import com.udacity.udacitybakingapps.Fragments.StepDetailsFragment;
 import com.udacity.udacitybakingapps.Interface.FragmentToActivityListener;
 import com.udacity.udacitybakingapps.Utils.FetchData;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -35,14 +39,16 @@ public class RecipeDetail extends AppCompatActivity implements FragmentToActivit
         if(savedInstanceState==null) {
             frag_details = new RecipeDetailsFragmentsList(this);
             frag_details.setRetainInstance(true);
-            getSupportFragmentManager().beginTransaction().add(R.id.recipe_detail_list_container,frag_details,RECIPE_DETAIL_FRAGMENT_TAG).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.recipe_detail_list_container,frag_details,RECIPE_DETAIL_FRAGMENT_TAG).addToBackStack(null).commit();
             ArrayList<Recipe> recipelist=new ArrayList<Recipe>();
-
+            Bundle b=new Bundle();
+            b.putString("test","testing");
+            frag_details.setArguments(b);
             Intent intent= getIntent();
 
             if(intent.getExtras()!=null){
                 Log.d(TAG,"inside if");
-                recipe=(Recipe) intent.getParcelableExtra("recipe");
+                recipe=(Recipe) Parcels.unwrap(intent.getParcelableExtra("recipe"));
                 Log.d(TAG,"Inside recipe detail if "+recipe.getName());
                 Log.d(TAG,recipe.getName());
                 String ingredient_text_row="";
@@ -50,7 +56,8 @@ public class RecipeDetail extends AppCompatActivity implements FragmentToActivit
             }
                frag_details.sendData(recipelist);
         }else{
-             frag_details=(RecipeDetailsFragmentsList)getSupportFragmentManager().findFragmentByTag(RECIPE_DETAIL_FRAGMENT_TAG);
+            recipe= Parcels.unwrap(savedInstanceState.getParcelable("recipe"));
+          //   frag_details=(RecipeDetailsFragmentsList)getSupportFragmentManager().findFragmentByTag(RECIPE_DETAIL_FRAGMENT_TAG);
 
         }
 
@@ -59,6 +66,11 @@ public class RecipeDetail extends AppCompatActivity implements FragmentToActivit
 
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("recipe",Parcels.wrap(recipe));
+    }
 
     @Override
     public void sendDataToActivity(int position) {
@@ -70,6 +82,10 @@ public class RecipeDetail extends AppCompatActivity implements FragmentToActivit
         if(getSupportFragmentManager().findFragmentByTag(STEP_DETAIL_FRAGMENT_TAG)==null){
             details= new StepDetailsFragment();
             details.setRetainInstance(true);
+            }
+        else
+            details=(StepDetailsFragment) getSupportFragmentManager().findFragmentByTag(STEP_DETAIL_FRAGMENT_TAG);
+
             Bundle args=new Bundle();
             ArrayList<ArrayList<String>> recipe_in_list= FetchData.fetchStepsArrayList(recipe);
             args.putString("ingredients",FetchData.fetchIngredientsString(recipe));
@@ -79,8 +95,7 @@ public class RecipeDetail extends AppCompatActivity implements FragmentToActivit
             args.putInt("position",position);
             details.setArguments(args);
             getSupportFragmentManager().beginTransaction().replace(R.id.recipe_detail_list_container,details,STEP_DETAIL_FRAGMENT_TAG).addToBackStack(null).commit();
-        }else
-            details=(StepDetailsFragment) getSupportFragmentManager().findFragmentByTag(STEP_DETAIL_FRAGMENT_TAG);
+
 
 
     }

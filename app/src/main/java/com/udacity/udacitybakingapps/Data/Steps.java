@@ -3,7 +3,9 @@ package com.udacity.udacitybakingapps.Data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Steps implements Parcelable {
+//public class Steps implements Parcelable {
+@org.parceler.Parcel
+public class Steps{
     private String shortDescription;
     private String description;
     private String videoURL;
@@ -47,7 +49,7 @@ public class Steps implements Parcelable {
         videoURL = in.readString();
         imageURL = in.readString();
     }
-
+/*
     @Override
     public int describeContents() {
         return 0;
@@ -72,5 +74,5 @@ public class Steps implements Parcelable {
         public Steps[] newArray(int size) {
             return new Steps[size];
         }
-    };
+    };*/
 }

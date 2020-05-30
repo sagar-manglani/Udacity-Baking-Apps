@@ -11,6 +11,7 @@ import com.udacity.udacitybakingapps.Interface.FragmentListOnClickListener;
 import com.udacity.udacitybakingapps.Interface.FragmentToActivityListener;
 import com.udacity.udacitybakingapps.Interface.SendDataFromActivity;
 import com.udacity.udacitybakingapps.R;
+import com.udacity.udacitybakingapps.RecipeDetail;
 import com.udacity.udacitybakingapps.RecyclerView.RecipeDetailListAdapter;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class RecipeDetailsFragmentsList extends Fragment implements SendDataFrom
         recipedetail.setAdapter(adapter);
         recipedetail.setLayoutManager(lm);
         Log.d(TAG,"inside oncreate view fragment"+recipe.getName());
+        Log.d("testing",getArguments().getString("test"));
         return view;
     }
 
@@ -57,10 +59,17 @@ public class RecipeDetailsFragmentsList extends Fragment implements SendDataFrom
              adapter.setRecipe(recipe);
          }
     }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(savedInstanceState!=null){
+            activity = (RecipeDetail)getActivity();
+        }
+    }
 
     @Override
     public void listOnClick(int step_position) {
-        Log.d(TAG,"Inside Listonclick of RecipeDetailsFragmentList");
+        Log.d(TAG,"Inside Listonclick of RecipeDetailsFragmentList "+step_position);
         activity.sendDataToActivity(step_position);
     }
 }

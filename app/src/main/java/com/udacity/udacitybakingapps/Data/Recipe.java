@@ -1,12 +1,13 @@
 package com.udacity.udacitybakingapps.Data;
 
 
-import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
+import org.parceler.Parcel;
 
-public class Recipe implements Parcelable {
+import java.util.ArrayList;
+@Parcel
+public class Recipe  {
     private String name;
     private ArrayList<Ingredients> ingredients;
     private ArrayList<Steps> steps;
@@ -56,6 +57,7 @@ public class Recipe implements Parcelable {
     public void setImage_url(String image_url) {
         this.image_url = image_url;
     }
+    /*
     protected Recipe(Parcel in) {
         name = in.readString();
         if (in.readByte() == 0x01) {
@@ -72,8 +74,8 @@ public class Recipe implements Parcelable {
         }
         servings = in.readString();
         image_url = in.readString();
-    }
-
+    }*/
+/*
     @Override
     public int describeContents() {
         return 0;
@@ -109,6 +111,6 @@ public class Recipe implements Parcelable {
         public Recipe[] newArray(int size) {
             return new Recipe[size];
         }
-    };
+    };*/
 
 }
