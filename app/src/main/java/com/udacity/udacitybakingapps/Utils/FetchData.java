@@ -1,10 +1,12 @@
 package com.udacity.udacitybakingapps.Utils;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.udacity.udacitybakingapps.Data.Ingredients;
 import com.udacity.udacitybakingapps.Data.Recipe;
 import com.udacity.udacitybakingapps.Data.Steps;
+import com.udacity.udacitybakingapps.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -97,6 +99,7 @@ public class FetchData {
                     recipe.setImage_url(jsonObject.getString("image"));
                 else
                     recipe.setImage_url("N/A");
+
                 recipeList.add(recipe);
 
             }
@@ -109,12 +112,14 @@ public class FetchData {
 
     }
 
-    public static String fetchIngredientsString(Recipe recipe){
+    public static String fetchIngredientsString(Recipe recipe, Context context){
         String ingredient_text_row="";
         for(int i=0; i<recipe.getIngredients().size();i++){
             ingredient_text_row = ingredient_text_row + recipe.getIngredients().get(i).getIngredient() + "  -" + recipe.getIngredients().get(i).getQuantity() + "  " + recipe.getIngredients().get(i).getMeasure();
             ingredient_text_row = ingredient_text_row + System.getProperty("line.separator");
             }
+
+        ingredient_text_row+= context.getResources().getString(R.string.servings_text)+recipe.getServings();
         return ingredient_text_row;
     }
 
@@ -123,16 +128,18 @@ public class FetchData {
         ArrayList<String> nameList= new ArrayList<>();
         ArrayList<String> descList= new ArrayList<>();
         ArrayList<String> videoUrlList= new ArrayList<>();
-        ArrayList<String> ingList=new ArrayList<>();
+        ArrayList<String> thumbNailUrlList=new ArrayList<>();
 
         for(int i=0; i<recipe.getSteps().size();i++){
             nameList.add(recipe.getSteps().get(i).getShortDescription());
             descList.add(recipe.getSteps().get(i).getDescription());
             videoUrlList.add(recipe.getSteps().get(i).getVideoURL());
+            thumbNailUrlList.add(recipe.getSteps().get(i).getImageURL());
         }
         res.add(nameList);
         res.add(descList);
         res.add(videoUrlList);
+        res.add(thumbNailUrlList);
         return res;
     }
 }

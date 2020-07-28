@@ -2,6 +2,7 @@ package com.udacity.udacitybakingapps;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
@@ -9,6 +10,7 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -27,6 +29,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String>, FragmentToActivityListener {
     RecipeListViewModel viewmodel;
+
     private static String TAG=MainActivity.class.getSimpleName();
     private static int LOADER_ID=101;
     LoaderManager manager;
@@ -41,12 +44,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
         manager= LoaderManager.getInstance(this);
         viewmodel= new ViewModelProvider(this).get(RecipeListViewModel.class);
+
         if(viewmodel.getmRecipeList()==null){
             loadRecipe();
+            Log.d(TAG,"Load recipes");
         }else{
             mRecipeList=viewmodel.getmRecipeList();
+            Log.d(TAG,"Load recipes from view model");
             setUpFragment(false);
         }
+
     }
 
     private void setUpFragment(Boolean isFirstTime){
@@ -105,12 +112,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         String ingredient_text_row="";
         Recipe recipe=mRecipeList.get(position);
         Log.d(TAG,""+recipe.getIngredients().size());
-        for(int i=0; i<recipe.getIngredients().size();i++){
+        /*for(int i=0; i<recipe.getIngredients().size();i++){
             ingredient_text_row =ingredient_text_row +  recipe.getIngredients().get(i).getIngredient()+"  -"+recipe.getIngredients().get(i).getQuantity()+"  "+recipe.getIngredients().get(i).getMeasure();
             ingredient_text_row=ingredient_text_row + System.getProperty("line.separator");
         }
-        Log.d(TAG,ingredient_text_row);
+        Log.d(TAG,ingredient_text_row);*/
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_out_bottom, R.anim.slide_in_bottom);
     }
 
     @Override

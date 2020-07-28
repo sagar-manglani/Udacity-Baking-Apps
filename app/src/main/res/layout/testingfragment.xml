@@ -1,12 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/testing"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:text="checking"/>
+        android:text="A long text to show how weights work in constraint layouts 111111111111111111111111111111111111111111111111111111111111"
+        android:id="@+id/one"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#caf"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/three"
+        app:layout_constraintHorizontal_weight="2"/>
 
-</LinearLayout>
+
+
+    <ImageView
+        android:contentDescription="Short text in right 333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333"
+        android:id="@+id/three"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_forward_black_24dp"
+        android:background="#fac"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/one"
+        app:layout_constraintRight_toRightOf="parent"
+        android:visibility="invisible"
+        app:layout_constraintHorizontal_weight="0.5"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

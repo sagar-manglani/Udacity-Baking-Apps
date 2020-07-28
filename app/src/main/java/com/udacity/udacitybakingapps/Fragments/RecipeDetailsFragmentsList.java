@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.udacity.udacitybakingapps.Data.Recipe;
 import com.udacity.udacitybakingapps.Interface.FragmentListOnClickListener;
@@ -28,6 +29,8 @@ public class RecipeDetailsFragmentsList extends Fragment implements SendDataFrom
     Recipe recipe;
     RecipeDetailListAdapter adapter;
     FragmentToActivityListener activity;
+
+
     private static String TAG=RecipeDetailsFragmentsList.class.getSimpleName();
 
     public RecipeDetailsFragmentsList(FragmentToActivityListener activity){
@@ -40,6 +43,7 @@ public class RecipeDetailsFragmentsList extends Fragment implements SendDataFrom
         recipedetail=view.findViewById(R.id.recipedetails);
         adapter=new RecipeDetailListAdapter(getActivity(),this);
         adapter.setRecipe(recipe);
+
         LinearLayoutManager lm=new LinearLayoutManager(getActivity());
         lm.setOrientation(RecyclerView.VERTICAL);
         recipedetail.setAdapter(adapter);

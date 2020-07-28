@@ -5,7 +5,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 import com.udacity.udacitybakingapps.Data.Recipe;
 import com.udacity.udacitybakingapps.Interface.FragmentListOnClickListener;
 import com.udacity.udacitybakingapps.R;
@@ -37,6 +40,10 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     public void onBindViewHolder(@NonNull RecipeListVH holder, int position) {
         Log.d(TAG, "inside onBind " + recipeArrayList.get(0).getName());
         holder.recipe_name.setText(recipeArrayList.get(position).getName());
+        if(!recipeArrayList.get(position).getImage_url().equals("N/A")){
+            Picasso.get().load(recipeArrayList.get(position).getImage_url()).error(R.drawable.ic_recipe).into(holder.recipe_image);
+        }
+
     }
 
     @Override
@@ -54,10 +61,11 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
     class RecipeListVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView recipe_name;
-
+        ImageView recipe_image;
         RecipeListVH(View view) {
             super(view);
             recipe_name = view.findViewById(R.id.recipe_name);
+            recipe_image=view.findViewById(R.id.recipe_image);
             view.setOnClickListener(this);
         }
 

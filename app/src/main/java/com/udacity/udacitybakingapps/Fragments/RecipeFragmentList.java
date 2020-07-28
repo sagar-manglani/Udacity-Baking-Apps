@@ -1,6 +1,8 @@
 package com.udacity.udacitybakingapps.Fragments;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,14 +13,13 @@ import com.udacity.udacitybakingapps.Interface.FragmentToActivityListener;
 import com.udacity.udacitybakingapps.Interface.SendDataFromActivity;
 import com.udacity.udacitybakingapps.Interface.FragmentListOnClickListener;
 import com.udacity.udacitybakingapps.R;
-import com.udacity.udacitybakingapps.RecipeDetail;
+import com.udacity.udacitybakingapps.RecyclerViewDecorator.listDecorator;
 import com.udacity.udacitybakingapps.RecyclerView.RecipeListAdapter;
-
 import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,13 +34,21 @@ public class RecipeFragmentList extends Fragment implements SendDataFromActivity
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recipelist,container,false);
         recipeList=view.findViewById(R.id.recipe_list);
-        LinearLayoutManager lm = new LinearLayoutManager(getContext());
-        lm.setOrientation(RecyclerView.VERTICAL);
-        recipeList.setLayoutManager(lm);
         adapter=new RecipeListAdapter(getActivity(),this);
         recipeList.setAdapter(adapter);
+
         adapter.setList(list);
+        listDecorator decorator = new listDecorator(getResources().getDrawable(R.drawable.listdivider),10);
+        recipeList.addItemDecoration(decorator);
         listener=(FragmentToActivityListener) getActivity();
+        if(getActivity().getResources().getBoolean(R.bool.isTablet)&& getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            GridLayoutManager grid=new GridLayoutManager(getActivity(),2);
+            recipeList.setLayoutManager(grid);
+        }else{
+            LinearLayoutManager lm = new LinearLayoutManager(getContext());
+            lm.setOrientation(RecyclerView.VERTICAL);
+            recipeList.setLayoutManager(lm);
+        }
         //Log.d(TAG,"inside onCreateView "+list.get(0).getName());
         return view;
 

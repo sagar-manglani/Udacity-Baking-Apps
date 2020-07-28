@@ -24,8 +24,8 @@ public class testingfragment extends Fragment {
             text = getArguments().getString("text");
         }else
             Log.d("testing","I am null");
-        TextView tv=view.findViewById(R.id.testing);
-        tv.setText(text);
+        //TextView tv=view.findViewById(R.id.testing);
+        //tv.setText(text);
         //return super.onCreateView(inflater, container, savedInstanceState);
         return view;
     }
