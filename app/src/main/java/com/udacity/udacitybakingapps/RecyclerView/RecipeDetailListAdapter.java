@@ -87,11 +87,11 @@ public class RecipeDetailListAdapter extends RecyclerView.Adapter<RecipeDetailLi
                 prev_arrow=rightArrow;
             }*/
             if(prev_position==-1){
-                view.setBackgroundColor(Color.RED);
+               // view.setBackgroundColor(Color.RED);
             }
             else if(prev_position!=getAbsoluteAdapterPosition()) {
-                prev_arrow.setBackgroundColor(Color.WHITE);
-                view.setBackgroundColor(Color.RED);
+                //prev_arrow.setBackgroundColor(Color.WHITE);
+               // view.setBackgroundColor(Color.RED);
             }
             prev_arrow=view;
             prev_position=getAbsoluteAdapterPosition();

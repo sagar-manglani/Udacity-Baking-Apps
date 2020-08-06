@@ -1,10 +1,7 @@
 package com.udacity.udacitybakingapps.Data;
 
-import android.os.Parcelable;
-
 import org.parceler.Parcel;
 
-//public class Ingredients implements Parcelable {
 @Parcel
 public class Ingredients{
      String quantity;
@@ -38,34 +35,5 @@ public class Ingredients{
     public void setIngredient(String ingredient) {
         this.ingredient = ingredient;
     }
- /*   protected Ingredients(Parcel in) {
-        quantity = in.readString();
-        measure = in.readString();
-        ingredient = in.readString();
-    }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(quantity);
-        dest.writeString(measure);
-        dest.writeString(ingredient);
-    }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<Ingredients> CREATOR = new Parcelable.Creator<Ingredients>() {
-        @Override
-        public Ingredients createFromParcel(Parcel in) {
-            return new Ingredients(in);
-        }
-
-        @Override
-        public Ingredients[] newArray(int size) {
-            return new Ingredients[size];
-        }
-    };*/
 }

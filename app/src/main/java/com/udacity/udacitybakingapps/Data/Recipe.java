@@ -1,8 +1,6 @@
 package com.udacity.udacitybakingapps.Data;
 
 
-import android.os.Parcelable;
-
 import org.parceler.Parcel;
 
 import java.util.ArrayList;
