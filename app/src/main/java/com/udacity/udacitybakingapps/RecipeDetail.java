@@ -46,6 +46,7 @@ public class RecipeDetail extends AppCompatActivity implements FragmentToActivit
     ActionBar actionBar;
     SharedPreferences sharedPreferences;
     String stepname;
+    int step_position;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +64,7 @@ public class RecipeDetail extends AppCompatActivity implements FragmentToActivit
             frag_details.setArguments(b);
             Intent intent= getIntent();
 
-            if(intent.getExtras()!=null){
+            if(intent.getExtras()!=null && !intent.getBooleanExtra("widget",false)){
                 Log.d(TAG,"inside if");
                 recipe=(Recipe) Parcels.unwrap(intent.getParcelableExtra("recipe"));
                 Log.d(TAG,"Inside recipe detail if "+recipe.getName());
@@ -71,8 +72,21 @@ public class RecipeDetail extends AppCompatActivity implements FragmentToActivit
                 actionBar.setTitle(recipe.getName());
                 String ingredient_text_row="";
                 recipelist.add(recipe);
+                frag_details.sendData(recipelist);
+            }else if(intent.getExtras()!=null && intent.getBooleanExtra("widget",false)){
+                SharedPreferences prefs =  this.getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                String widget_string= prefs.getString("widget","");
+                Gson gson = new Gson();
+                WidgetData widgetData=gson.fromJson(widget_string,WidgetData.class);
+                recipe= widgetData.getRecipe();
+                actionBar.setTitle(recipe.getName());
+                String ingredient_text_row="";
+                recipelist.add(recipe);
+                step_position= widgetData.getPosition();
+                frag_details.sendData(recipelist);
+                sendDataToActivity(step_position);
             }
-               frag_details.sendData(recipelist);
+
         }else{
             recipe= Parcels.unwrap(savedInstanceState.getParcelable("recipe"));
 

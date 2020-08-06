@@ -26,6 +26,7 @@ public class LatestRecipe extends AppWidgetProvider {
         CharSequence widgetText = context.getString(R.string.appwidget_text);
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.latest_recipe);
         SharedPreferences prefs =  context.getSharedPreferences("MySharedPref", MODE_PRIVATE);
+
         String widget_string= prefs.getString("widget","");
         Gson gson = new Gson();
         WidgetData widgetData=gson.fromJson(widget_string,WidgetData.class);
@@ -36,6 +37,7 @@ public class LatestRecipe extends AppWidgetProvider {
             step_description="See all ingredients";
         }else
             step_description=recipe.getSteps().get(position-1).getShortDescription();
+
         views.setTextViewText(R.id.recipe_name, recipe.getName());
         views.setTextViewText(R.id.step_name, step_description);
         Intent intent = new Intent(context,RecipeDetail.class);
