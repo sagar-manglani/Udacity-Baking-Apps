@@ -1,31 +1,23 @@
 package com.udacity.udacitybakingapps.Fragments;
 
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-
 import com.udacity.udacitybakingapps.Data.Recipe;
 import com.udacity.udacitybakingapps.Interface.FragmentListOnClickListener;
 import com.udacity.udacitybakingapps.Interface.FragmentToActivityListener;
 import com.udacity.udacitybakingapps.Interface.PassWidgetInformation;
 import com.udacity.udacitybakingapps.Interface.SendDataFromActivity;
-import com.udacity.udacitybakingapps.LatestRecipe;
 import com.udacity.udacitybakingapps.R;
 import com.udacity.udacitybakingapps.RecipeDetail;
 import com.udacity.udacitybakingapps.RecyclerView.RecipeDetailListAdapter;
-
 import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
