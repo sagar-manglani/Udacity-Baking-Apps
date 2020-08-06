@@ -1,7 +1,10 @@
 package com.udacity.udacitybakingapps;
 
 import android.app.Activity;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.Image;
 import android.os.Bundle;
@@ -10,10 +13,13 @@ import android.os.PersistableBundle;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.google.gson.Gson;
 import com.udacity.udacitybakingapps.Data.Recipe;
+import com.udacity.udacitybakingapps.Data.WidgetData;
 import com.udacity.udacitybakingapps.Fragments.RecipeDetailsFragmentsList;
 import com.udacity.udacitybakingapps.Fragments.StepDetailsFragment;
 import com.udacity.udacitybakingapps.Interface.FragmentToActivityListener;
+import com.udacity.udacitybakingapps.Interface.PassWidgetInformation;
 import com.udacity.udacitybakingapps.Utils.FetchData;
 
 import org.parceler.Parcels;
@@ -29,7 +35,7 @@ import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-public class RecipeDetail extends AppCompatActivity implements FragmentToActivityListener {
+public class RecipeDetail extends AppCompatActivity implements FragmentToActivityListener, PassWidgetInformation {
 
     private static String RECIPE_DETAIL_FRAGMENT_TAG="detail_fragment";
     private static String STEP_DETAIL_FRAGMENT_TAG="step_fragment";
@@ -38,14 +44,15 @@ public class RecipeDetail extends AppCompatActivity implements FragmentToActivit
     RecipeDetailsFragmentsList frag_details;
     StepDetailsFragment details;
     ActionBar actionBar;
-
+    SharedPreferences sharedPreferences;
+    String stepname;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_recipe);
         Log.d(TAG,"Inside recipe detail");
         actionBar=getSupportActionBar();
-
+        sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         if(savedInstanceState==null) {
             frag_details = new RecipeDetailsFragmentsList(this);
             frag_details.setRetainInstance(true);
@@ -100,8 +107,9 @@ public class RecipeDetail extends AppCompatActivity implements FragmentToActivit
         args.putStringArrayList("desc",recipe_in_list.get(1));
         args.putStringArrayList("videoURL",recipe_in_list.get(2));
         args.putStringArrayList("imageURL",recipe_in_list.get(3));
-
+        args.putParcelable("recipe",Parcels.wrap(recipe));
         args.putInt("position",position);
+        //stepname=recipe_in_list.get(0).get(position-1);
         if(getSupportFragmentManager().findFragmentByTag(STEP_DETAIL_FRAGMENT_TAG)==null){
             details= new StepDetailsFragment();
             details.setRetainInstance(true);
@@ -132,5 +140,18 @@ public class RecipeDetail extends AppCompatActivity implements FragmentToActivit
             finish();
         Log.d(TAG,"count is "+fragment_count);
     }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        AppWidgetManager manager=AppWidgetManager.getInstance(this);
+        int[] ids=manager.getAppWidgetIds(new ComponentName(this,LatestRecipe.class));
+        LatestRecipe.updateWidget(this,manager,ids);
 
+    }
+
+    @Override
+    public void passDataForWidget(Recipe recipe_name, int step_position) {
+        FetchData.updateWidget(sharedPreferences,recipe_name,step_position);
+
+    }
 }

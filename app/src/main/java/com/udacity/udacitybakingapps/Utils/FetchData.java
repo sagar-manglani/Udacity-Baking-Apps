@@ -1,11 +1,15 @@
 package com.udacity.udacitybakingapps.Utils;
 
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.udacity.udacitybakingapps.Data.Ingredients;
 import com.udacity.udacitybakingapps.Data.Recipe;
 import com.udacity.udacitybakingapps.Data.Steps;
+import com.udacity.udacitybakingapps.Data.WidgetData;
 import com.udacity.udacitybakingapps.R;
 
 import org.json.JSONArray;
@@ -141,5 +145,15 @@ public class FetchData {
         res.add(videoUrlList);
         res.add(thumbNailUrlList);
         return res;
+    }
+
+    public static void updateWidget(SharedPreferences sharedPreferences, Recipe recipe_name, int step_position){
+        SharedPreferences.Editor myEdit = sharedPreferences.edit();
+        Gson gson = new Gson();
+        WidgetData widget= new WidgetData(recipe_name,step_position);
+        String widget_json= gson.toJson(widget);
+        myEdit.putString("widget",widget_json);
+        myEdit.commit();
+
     }
 }

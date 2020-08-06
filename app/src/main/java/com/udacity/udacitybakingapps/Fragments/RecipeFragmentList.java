@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.udacity.udacitybakingapps.Data.Recipe;
 import com.udacity.udacitybakingapps.Interface.FragmentToActivityListener;
+import com.udacity.udacitybakingapps.Interface.PassWidgetInformation;
 import com.udacity.udacitybakingapps.Interface.SendDataFromActivity;
 import com.udacity.udacitybakingapps.Interface.FragmentListOnClickListener;
 import com.udacity.udacitybakingapps.R;
@@ -29,6 +30,9 @@ public class RecipeFragmentList extends Fragment implements SendDataFromActivity
     ArrayList<Recipe> list;
     FragmentToActivityListener listener;
     static String TAG= RecipeFragmentList.class.getSimpleName();
+    PassWidgetInformation activity;
+    int recipe_position;
+    private static Boolean updateWidget=false;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -36,7 +40,7 @@ public class RecipeFragmentList extends Fragment implements SendDataFromActivity
         recipeList=view.findViewById(R.id.recipe_list);
         adapter=new RecipeListAdapter(getActivity(),this);
         recipeList.setAdapter(adapter);
-
+        activity=(PassWidgetInformation)getActivity();
         adapter.setList(list);
         listDecorator decorator = new listDecorator(getResources().getDrawable(R.drawable.listdivider),10);
         recipeList.addItemDecoration(decorator);
@@ -56,6 +60,7 @@ public class RecipeFragmentList extends Fragment implements SendDataFromActivity
 
     @Override
     public void sendData(ArrayList<Recipe> list) {
+        Log.d("list","list is set");
         if(this.list==null)
             this.list=list;
         else{
@@ -71,6 +76,17 @@ public class RecipeFragmentList extends Fragment implements SendDataFromActivity
     public void listOnClick(int position) {
         Log.d(TAG,"clicked on in fragment "+position);
         listener.sendDataToActivity(position);
+        recipe_position=position;
+        updateWidget=true;
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(updateWidget) {
+            Log.d("widgetupdate", "RecipeFragmentList " + list.get(recipe_position).getName() + " " + 0);
+            activity.passDataForWidget(list.get(recipe_position), 0);
+            updateWidget=false;
+        }
     }
 }

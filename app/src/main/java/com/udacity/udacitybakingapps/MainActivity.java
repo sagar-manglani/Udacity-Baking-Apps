@@ -9,14 +9,20 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.udacity.udacitybakingapps.Data.Recipe;
+import com.udacity.udacitybakingapps.Data.WidgetData;
 import com.udacity.udacitybakingapps.Fragments.RecipeFragmentList;
 import com.udacity.udacitybakingapps.Interface.FragmentToActivityListener;
+import com.udacity.udacitybakingapps.Interface.PassWidgetInformation;
 import com.udacity.udacitybakingapps.Utils.FetchData;
 import com.udacity.udacitybakingapps.Utils.Loaders;
 import com.udacity.udacitybakingapps.ViewModels.RecipeListViewModel;
@@ -27,9 +33,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String>, FragmentToActivityListener {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String>, FragmentToActivityListener, PassWidgetInformation {
     RecipeListViewModel viewmodel;
-
+    SharedPreferences sharedPreferences;
     private static String TAG=MainActivity.class.getSimpleName();
     private static int LOADER_ID=101;
     LoaderManager manager;
@@ -38,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     RecipeFragmentList recipe_frag;
     private static String RECIPE_FRAGMENT_TAG="recipeList";
     Boolean isTablet=false;
+    Recipe recipe_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             Log.d(TAG,"Load recipes from view model");
             setUpFragment(false);
         }
+        sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
 
     }
 
@@ -110,8 +118,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         intent.putExtra("recipe", Parcels.wrap(mRecipeList.get(position)));
         //intent.putExtra("recipe",mRecipeList.get(position));
         String ingredient_text_row="";
-        Recipe recipe=mRecipeList.get(position);
-        Log.d(TAG,""+recipe.getIngredients().size());
+        recipe_name=mRecipeList.get(position);
+        Log.d(TAG,""+recipe_name.getIngredients().size());
         /*for(int i=0; i<recipe.getIngredients().size();i++){
             ingredient_text_row =ingredient_text_row +  recipe.getIngredients().get(i).getIngredient()+"  -"+recipe.getIngredients().get(i).getQuantity()+"  "+recipe.getIngredients().get(i).getMeasure();
             ingredient_text_row=ingredient_text_row + System.getProperty("line.separator");
@@ -125,5 +133,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void sendDataToActivity(int position) {
         Log.d(TAG,"clicked on in activity "+position);
         loadDetailActivity(position);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        AppWidgetManager manager=AppWidgetManager.getInstance(this);
+        int[] ids=manager.getAppWidgetIds(new ComponentName(this,LatestRecipe.class));
+        LatestRecipe.updateWidget(this,manager,ids);
+
+    }
+
+    @Override
+    public void passDataForWidget(Recipe recipe_name, int step_position) {
+        FetchData.updateWidget(sharedPreferences,recipe_name,step_position);
+
     }
 }

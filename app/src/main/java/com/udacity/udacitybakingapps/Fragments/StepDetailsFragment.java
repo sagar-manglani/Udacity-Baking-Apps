@@ -2,6 +2,9 @@ package com.udacity.udacitybakingapps.Fragments;
 
 import android.app.ActionBar;
 import android.app.Dialog;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,7 +29,12 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.squareup.picasso.Picasso;
+import com.udacity.udacitybakingapps.Data.Recipe;
+import com.udacity.udacitybakingapps.Interface.PassWidgetInformation;
+import com.udacity.udacitybakingapps.LatestRecipe;
 import com.udacity.udacitybakingapps.R;
+
+import org.parceler.Parcels;
 
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -50,6 +58,7 @@ public class StepDetailsFragment extends Fragment {
     PlayerView mPlayerView;
     Dialog mFullScreenDialog;
     Boolean mExoPlayerFullscreen;
+    PassWidgetInformation widget_activity;
     private static String TAG=StepDetailsFragment.class.getSimpleName();
     private static String WHEN_READY_KEY="whenready";
     private static String CURRENT_WINDOW="currentwindow";
@@ -63,6 +72,8 @@ public class StepDetailsFragment extends Fragment {
     private long playbackPosition = 0;
     Boolean videoPresent=false;
     Boolean postionSaved=false;
+    Recipe recipe;
+    SharedPreferences sharedPreferences;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -71,10 +82,11 @@ public class StepDetailsFragment extends Fragment {
         Bundle arg=getArguments();
         tv_desc=view.findViewById(R.id.step_description);
         tv_name=view.findViewById(R.id.step_name);
-
+        widget_activity=(PassWidgetInformation) getActivity();
         prev=view.findViewById(R.id.prev_button);
         next=view.findViewById(R.id.next_button);
         mPlayerView=view.findViewById(R.id.step_video);
+        sharedPreferences = getActivity().getSharedPreferences("MySharedPref", getActivity().MODE_PRIVATE);
         if(getActivity().getResources().getBoolean(R.bool.isTablet)){
             prev.setVisibility(View.GONE);
             next.setVisibility(View.GONE);
@@ -128,7 +140,7 @@ public class StepDetailsFragment extends Fragment {
         videoURLList=arg.getStringArrayList("videoURL");
         desc=arg.getStringArrayList("desc");
         step_name=arg.getStringArrayList("name");
-
+        recipe= Parcels.unwrap(arg.getParcelable("recipe"));
 
         imageURL=arg.getStringArrayList("imageURL");
         if(!postionSaved) {
@@ -221,6 +233,7 @@ public class StepDetailsFragment extends Fragment {
                 mPlayerView.setVisibility(View.VISIBLE);
             videoPresent=true;
             mVideoURL = new URL(videoURLList.get(current_step-1));
+
             DefaultTrackSelector trackSelector = new DefaultTrackSelector(getActivity());
             trackSelector.setParameters(trackSelector.buildUponParameters().setMaxVideoSizeSd());
             mPlayer = new SimpleExoPlayer.Builder(getActivity())
@@ -254,5 +267,8 @@ public class StepDetailsFragment extends Fragment {
     public void onStop() {
         super.onStop();
         releasePlayer();
+        Log.d("widgetupdate","StepDetailsFragmentList "+recipe.getName()+" "+current_step);
+        widget_activity.passDataForWidget(recipe,current_step);
+
     }
 }
