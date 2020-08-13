@@ -1,21 +1,20 @@
 package com.udacity.udacitybakingapps.Utils;
 
-import android.appwidget.AppWidgetManager;
+
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
-
 import com.google.gson.Gson;
 import com.udacity.udacitybakingapps.Data.Ingredients;
 import com.udacity.udacitybakingapps.Data.Recipe;
 import com.udacity.udacitybakingapps.Data.Steps;
 import com.udacity.udacitybakingapps.Data.WidgetData;
 import com.udacity.udacitybakingapps.R;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -45,9 +44,20 @@ public class FetchData {
         }
     }
 
+    public static boolean internet_connection(Context context){
+        //Check if connected to internet, output accordingly
+        ConnectivityManager cm =
+                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        return isConnected;
+    }
+
     public static ArrayList<Recipe> getRecipeList(String data){
         try {
-            ArrayList<Recipe> recipeList=new ArrayList<Recipe>();
+            ArrayList<Recipe> recipeList=new ArrayList<>();
             JSONArray jsonArray = new JSONArray(data);
             for(int i=0;i<jsonArray.length();i++){
                 JSONObject jsonObject=jsonArray.getJSONObject(i);
@@ -57,7 +67,7 @@ public class FetchData {
                 else
                     recipe.setName("N/A");
                 if(jsonObject.getString("ingredients")!=null && !jsonObject.getString("ingredients").isEmpty()){
-                    ArrayList<Ingredients> ingredients=new ArrayList<Ingredients>();
+                    ArrayList<Ingredients> ingredients=new ArrayList<>();
                     JSONArray ingredientsArray=jsonObject.getJSONArray("ingredients");
                     //Log.d("FetchData",""+ingredientsArray.length());
                     for(int j=0;j<ingredientsArray.length();j++){
@@ -74,7 +84,7 @@ public class FetchData {
                     recipe.setIngredients(ingredients);
                 }
                 if(jsonObject.getString("steps")!=null && !jsonObject.getString("steps").isEmpty()) {
-                    ArrayList<Steps> steps = new ArrayList<Steps>();
+                    ArrayList<Steps> steps = new ArrayList<>();
                     JSONArray stepsArray = jsonObject.getJSONArray("steps");
                     for (int j = 0; j < stepsArray.length(); j++) {
                         JSONObject stepsObject = stepsArray.getJSONObject(j);
@@ -128,7 +138,7 @@ public class FetchData {
     }
 
     public static ArrayList<ArrayList<String>> fetchStepsArrayList(Recipe recipe){
-        ArrayList<ArrayList<String>> res=new ArrayList<ArrayList<String>>();
+        ArrayList<ArrayList<String>> res=new ArrayList<>();
         ArrayList<String> nameList= new ArrayList<>();
         ArrayList<String> descList= new ArrayList<>();
         ArrayList<String> videoUrlList= new ArrayList<>();

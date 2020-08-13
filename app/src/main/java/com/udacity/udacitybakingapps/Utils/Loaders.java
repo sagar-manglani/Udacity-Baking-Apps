@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.loader.content.AsyncTaskLoader;
 
 public class Loaders extends AsyncTaskLoader<String> {
-    URL receipeURL;
+    private URL receipeURL;
 
     public Loaders(URL url, Context context){
         super(context);
@@ -21,8 +21,7 @@ public class Loaders extends AsyncTaskLoader<String> {
     @Override
     public String loadInBackground() {
         try {
-            String jsonData = FetchData.getResponseFromHttpUrl(receipeURL);
-            return jsonData;
+            return FetchData.getResponseFromHttpUrl(receipeURL);
 
         }catch(IOException ex){
             ex.printStackTrace();

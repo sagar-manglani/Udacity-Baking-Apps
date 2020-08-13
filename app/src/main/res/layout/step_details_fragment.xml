@@ -1,43 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-  <com.google.android.exoplayer2.ui.PlayerView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:id="@+id/step_video"
-      android:visibility="gone"/>
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:textSize="20sp"
-      android:layout_marginStart="20dp"
-      android:id="@+id/step_name"
-      android:text="Step Description"
-      android:textStyle="bold"
-    />
-  <TextView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:id="@+id/step_description"
-      android:textSize="20sp"
-      android:layout_marginStart="20dp"
-      />
+<RelativeLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <Button
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:id="@+id/prev_button"
-      android:text="Prev Step"
-      android:onClick="showPrevStep"
-      />
-  <Button
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:id="@+id/next_button"
-      android:text="Next Step"
-      android:onClick="showNextStep"/>
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+      <com.google.android.exoplayer2.ui.PlayerView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:id="@+id/step_video"
+          android:visibility="gone"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_list_text_size"
+            android:layout_marginStart="@dimen/step_fragment_margin_start"
+            android:id="@+id/no_internet_warning_text"
+            android:text="@string/no_internet_warning_text"
+            android:textStyle="bold"
+            android:visibility="gone"
+            />
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textSize="@dimen/detail_list_text_size"
+          android:layout_marginStart="@dimen/step_fragment_margin_start"
+          android:id="@+id/step_name"
+          android:text="@string/description_header"
+          android:textStyle="bold"
+        />
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:id="@+id/step_description"
+          android:textSize="@dimen/detail_list_text_size"
+          android:layout_marginStart="@dimen/step_fragment_margin_start"
+          />
+    </LinearLayout>
+    <Button
+        android:id="@+id/prev_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="showPrevStep"
+        android:text="@string/prev_step_button_text"
+        android:textSize="@dimen/detail_list_text_size"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="@dimen/step_fragment_button_margin"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/next_button"
+        android:text="@string/next_step_button_text"
+        android:textSize="@dimen/detail_list_text_size"
+        android:onClick="showNextStep"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/step_fragment_button_margin"
+        />
 
 
-</LinearLayout>
+
+
+</RelativeLayout>

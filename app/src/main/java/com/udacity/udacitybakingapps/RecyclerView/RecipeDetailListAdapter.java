@@ -1,29 +1,22 @@
 package com.udacity.udacitybakingapps.RecyclerView;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.udacity.udacitybakingapps.Data.Ingredients;
 import com.udacity.udacitybakingapps.Data.Recipe;
 import com.udacity.udacitybakingapps.Interface.FragmentListOnClickListener;
 import com.udacity.udacitybakingapps.R;
-
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class RecipeDetailListAdapter extends RecyclerView.Adapter<RecipeDetailListAdapter.RecipeDetailListVH> {
-    Context context;
-    Recipe recipe;
-    int prev_position=-1;
-    View prev_arrow;
-    FragmentListOnClickListener parent;
+    private Context context;
+    private Recipe recipe;
+    //private int prev_position=-1;
+    private FragmentListOnClickListener parent;
     private static String TAG=RecipeDetailListAdapter.class.getSimpleName();
 
     public RecipeDetailListAdapter(Context context, FragmentListOnClickListener parent){
@@ -43,11 +36,11 @@ public class RecipeDetailListAdapter extends RecyclerView.Adapter<RecipeDetailLi
     @Override
     public void onBindViewHolder(@NonNull RecipeDetailListAdapter.RecipeDetailListVH holder, int position) {
         if(position==0){
-            holder.textview.setText("See all ingredients");
+            holder.textview.setText(context.getResources().getString(R.string.ingredients_row_text));
         }else
             holder.textview.setText(recipe.getSteps().get(position-1).getShortDescription());
-        String s=holder.textview.getText().toString();
-        int steps=recipe.getSteps().size();
+        //String s=holder.textview.getText().toString();
+        //int steps=recipe.getSteps().size();
 
 
     }
@@ -85,7 +78,7 @@ public class RecipeDetailListAdapter extends RecyclerView.Adapter<RecipeDetailLi
                     prev_arrow.setVisibility(View.INVISIBLE);
                 rightArrow.setVisibility(View.VISIBLE);
                 prev_arrow=rightArrow;
-            }*/
+            }
             if(prev_position==-1){
                // view.setBackgroundColor(Color.RED);
             }
@@ -94,7 +87,7 @@ public class RecipeDetailListAdapter extends RecyclerView.Adapter<RecipeDetailLi
                // view.setBackgroundColor(Color.RED);
             }
             prev_arrow=view;
-            prev_position=getAbsoluteAdapterPosition();
+            prev_position=getAbsoluteAdapterPosition();*/
             parent.listOnClick(getAbsoluteAdapterPosition());
 
         }

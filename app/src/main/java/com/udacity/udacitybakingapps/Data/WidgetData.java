@@ -1,10 +1,8 @@
 package com.udacity.udacitybakingapps.Data;
 
 public class WidgetData {
-
-
-    Recipe recipe;
-    int position;
+    private Recipe recipe;
+    private int position;
 
     public WidgetData(Recipe recipe, int   position){
         this.recipe=recipe;

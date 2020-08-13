@@ -1,6 +1,6 @@
 package com.udacity.udacitybakingapps.Fragments;
 
-import android.content.SharedPreferences;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,13 +23,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class RecipeDetailsFragmentsList extends Fragment implements SendDataFromActivity, FragmentListOnClickListener {
 
-    RecyclerView recipedetail;
-    Recipe recipe;
-    RecipeDetailListAdapter adapter;
-    FragmentToActivityListener activity;
-    SharedPreferences sharedPreferences;
-    int position;
-    PassWidgetInformation widget_activity;
+    private RecyclerView recipedetail;
+    private Recipe recipe;
+    private RecipeDetailListAdapter adapter;
+    private FragmentToActivityListener activity;
+    //private int position;
+    //private PassWidgetInformation widget_activity;
+
     private static String TAG=RecipeDetailsFragmentsList.class.getSimpleName();
 
     public RecipeDetailsFragmentsList(FragmentToActivityListener activity){
@@ -42,20 +42,19 @@ public class RecipeDetailsFragmentsList extends Fragment implements SendDataFrom
         recipedetail=view.findViewById(R.id.recipedetails);
         adapter=new RecipeDetailListAdapter(getActivity(),this);
         adapter.setRecipe(recipe);
-        sharedPreferences = getActivity().getSharedPreferences("MySharedPref", getActivity().MODE_PRIVATE);
         LinearLayoutManager lm=new LinearLayoutManager(getActivity());
         lm.setOrientation(RecyclerView.VERTICAL);
         recipedetail.setAdapter(adapter);
         recipedetail.setLayoutManager(lm);
-        widget_activity=(PassWidgetInformation)getActivity();
-        Log.d(TAG,"inside oncreate view fragment"+recipe.getName());
-        Log.d("testing",getArguments().getString("test"));
+
+        //Log.d(TAG,"inside oncreate view fragment"+recipe.getName());
+        //Log.d("testing",getArguments().getString("test"));
         return view;
     }
 
     @Override
     public void sendData(ArrayList<Recipe> list) {
-        Log.d(TAG,"inside sendData of fragment list "+list.get(0).getName());
+        //Log.d(TAG,"inside sendData of fragment list "+list.get(0).getName());
          if(recipe==null){
              recipe=list.get(0);
          }else{
@@ -69,13 +68,21 @@ public class RecipeDetailsFragmentsList extends Fragment implements SendDataFrom
         if(savedInstanceState!=null){
             activity = (RecipeDetail)getActivity();
         }
+
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        //widget_activity=(PassWidgetInformation)getActivity();
+
     }
 
     @Override
     public void listOnClick(int step_position) {
-        Log.d(TAG,"Inside Listonclick of RecipeDetailsFragmentList "+step_position);
+        //Log.d(TAG,"Inside Listonclick of RecipeDetailsFragmentList "+step_position);
         activity.sendDataToActivity(step_position);
-        position=step_position;
+        //position=step_position;
     }
 
     @Override

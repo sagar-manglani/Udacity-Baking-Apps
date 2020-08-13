@@ -4,6 +4,10 @@ package com.udacity.udacitybakingapps.Data;
 import org.parceler.Parcel;
 
 import java.util.ArrayList;
+import java.util.jar.Attributes;
+
+import androidx.annotation.NonNull;
+
 @Parcel
 public class Recipe  {
     private String name;
@@ -55,6 +59,14 @@ public class Recipe  {
     public void setImage_url(String image_url) {
         this.image_url = image_url;
     }
+
+    @NonNull
+    @Override
+    public String toString() {
+        super.toString();
+        return name + " "+ steps.size();
+    }
+
     /*
     protected Recipe(Parcel in) {
         name = in.readString();

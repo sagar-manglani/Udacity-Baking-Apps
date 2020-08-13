@@ -10,23 +10,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/widget_margin"
         android:background="#fff"
-        android:text="Let's Start Baking"
+        android:text="@string/widget_header"
         android:contentDescription="heading"
         android:textColor="#000"
-        android:textSize="24sp"
+        android:textSize="@dimen/widget_text"
         android:textStyle="bold|italic" />
     <TextView
         android:id="@+id/recipe_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/widget_margin"
         android:background="#fff"
         android:contentDescription="Your Recipe Name"
         android:textColor="#000000"
-        android:textSize="24sp"
+        android:textSize="@dimen/widget_text"
         android:layout_below="@+id/heading"
         android:textStyle="bold|italic" />
     <TextView
@@ -35,11 +35,11 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/widget_margin"
         android:background="#ffffff"
         android:contentDescription="Your Step Name"
         android:textColor="#000000"
-        android:textSize="24sp"
+        android:textSize="@dimen/widget_text"
         android:textStyle="bold|italic"
         android:layout_below="@id/recipe_name"/>
 

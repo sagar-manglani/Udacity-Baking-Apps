@@ -1,18 +1,11 @@
 package com.udacity.udacitybakingapps;
 
-import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.media.Image;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.PersistableBundle;
 import android.util.Log;
-import android.widget.ImageView;
-
 import com.google.gson.Gson;
 import com.udacity.udacitybakingapps.Data.Recipe;
 import com.udacity.udacitybakingapps.Data.WidgetData;
@@ -21,18 +14,12 @@ import com.udacity.udacitybakingapps.Fragments.StepDetailsFragment;
 import com.udacity.udacitybakingapps.Interface.FragmentToActivityListener;
 import com.udacity.udacitybakingapps.Interface.PassWidgetInformation;
 import com.udacity.udacitybakingapps.Utils.FetchData;
-
 import org.parceler.Parcels;
-
 import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentContainerView;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 public class RecipeDetail extends AppCompatActivity implements FragmentToActivityListener, PassWidgetInformation {
@@ -45,7 +32,7 @@ public class RecipeDetail extends AppCompatActivity implements FragmentToActivit
     StepDetailsFragment details;
     ActionBar actionBar;
     SharedPreferences sharedPreferences;
-    String stepname;
+
     int step_position;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,7 +45,7 @@ public class RecipeDetail extends AppCompatActivity implements FragmentToActivit
             frag_details = new RecipeDetailsFragmentsList(this);
             frag_details.setRetainInstance(true);
             getSupportFragmentManager().beginTransaction().add(R.id.recipe_detail_list_container,frag_details,RECIPE_DETAIL_FRAGMENT_TAG).addToBackStack(null).commit();
-            ArrayList<Recipe> recipelist=new ArrayList<Recipe>();
+            ArrayList<Recipe> recipelist=new ArrayList<>();
             Bundle b=new Bundle();
             b.putString("test","testing");
             frag_details.setArguments(b);
@@ -66,11 +53,10 @@ public class RecipeDetail extends AppCompatActivity implements FragmentToActivit
 
             if(intent.getExtras()!=null && !intent.getBooleanExtra("widget",false)){
                 Log.d(TAG,"inside if");
-                recipe=(Recipe) Parcels.unwrap(intent.getParcelableExtra("recipe"));
-                Log.d(TAG,"Inside recipe detail if "+recipe.getName());
-                Log.d(TAG,recipe.getName());
-                actionBar.setTitle(recipe.getName());
-                String ingredient_text_row="";
+                recipe=Parcels.unwrap(intent.getParcelableExtra("recipe"));
+                //Log.d(TAG,"Inside recipe detail if "+recipe.getName());
+                //Log.d(TAG,recipe.getName());
+                //String ingredient_text_row="";
                 recipelist.add(recipe);
                 frag_details.sendData(recipelist);
             }else if(intent.getExtras()!=null && intent.getBooleanExtra("widget",false)){
@@ -79,8 +65,6 @@ public class RecipeDetail extends AppCompatActivity implements FragmentToActivit
                 Gson gson = new Gson();
                 WidgetData widgetData=gson.fromJson(widget_string,WidgetData.class);
                 recipe= widgetData.getRecipe();
-                actionBar.setTitle(recipe.getName());
-                String ingredient_text_row="";
                 recipelist.add(recipe);
                 step_position= widgetData.getPosition();
                 frag_details.sendData(recipelist);
@@ -93,7 +77,7 @@ public class RecipeDetail extends AppCompatActivity implements FragmentToActivit
           //   frag_details=(RecipeDetailsFragmentsList)getSupportFragmentManager().findFragmentByTag(RECIPE_DETAIL_FRAGMENT_TAG);
 
         }
-
+        actionBar.setTitle(recipe.getName());
 
 
 
@@ -116,13 +100,13 @@ public class RecipeDetail extends AppCompatActivity implements FragmentToActivit
         }*/
         Bundle args=new Bundle();
         ArrayList<ArrayList<String>> recipe_in_list= FetchData.fetchStepsArrayList(recipe);
-        args.putString("ingredients",FetchData.fetchIngredientsString(recipe,getApplicationContext()));
-        args.putStringArrayList("name",recipe_in_list.get(0));
-        args.putStringArrayList("desc",recipe_in_list.get(1));
-        args.putStringArrayList("videoURL",recipe_in_list.get(2));
-        args.putStringArrayList("imageURL",recipe_in_list.get(3));
-        args.putParcelable("recipe",Parcels.wrap(recipe));
-        args.putInt("position",position);
+        args.putString(getResources().getString(R.string.Steps_Ingredients_key),FetchData.fetchIngredientsString(recipe,getApplicationContext()));
+        args.putStringArrayList(getResources().getString(R.string.Steps_Name_key),recipe_in_list.get(0));
+        args.putStringArrayList(getResources().getString(R.string.Steps_Desc_key),recipe_in_list.get(1));
+        args.putStringArrayList(getResources().getString(R.string.Steps_Video_URL_key),recipe_in_list.get(2));
+        args.putStringArrayList(getResources().getString(R.string.Steps_Image_URL_key),recipe_in_list.get(3));
+        args.putParcelable(getResources().getString(R.string.Steps_Recipe_key),Parcels.wrap(recipe));
+        args.putInt(getResources().getString(R.string.Steps_Positiion_key),position);
         //stepname=recipe_in_list.get(0).get(position-1);
         if(getSupportFragmentManager().findFragmentByTag(STEP_DETAIL_FRAGMENT_TAG)==null){
             details= new StepDetailsFragment();

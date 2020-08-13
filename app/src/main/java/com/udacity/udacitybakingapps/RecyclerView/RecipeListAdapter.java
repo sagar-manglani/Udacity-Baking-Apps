@@ -18,10 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.RecipeListVH> {
 
-    ArrayList<Recipe> recipeArrayList;
-    Context context;
-    FragmentListOnClickListener listener;
-    static String TAG = RecipeListAdapter.class.getSimpleName();
+    private ArrayList<Recipe> recipeArrayList;
+    private Context context;
+    private FragmentListOnClickListener listener;
+    private static String TAG = RecipeListAdapter.class.getSimpleName();
 
     public RecipeListAdapter(Context context, FragmentListOnClickListener listener) {
         this.context = context;
@@ -59,7 +59,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     }
 
 
-    class RecipeListVH extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class RecipeListVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView recipe_name;
         ImageView recipe_image;
         RecipeListVH(View view) {
